@@ -15,8 +15,21 @@ import java.util.UUID;
  * Created by jt on 2019-04-20.
  */
 
+@RequestMapping("api/v1/beer")
 @RestController
 public class BeerController {
 
+    private final BeerService beerService;
 
+    //Constructor DI
+    public BeerController(BeerService beerService) {
+        this.beerService = beerService;
+    }
+
+    @GetMapping({"/{beerId}"})
+    public ResponseEntity<BeerDto> getBeer(@PathVariable("beerId") UUID beerId){
+
+        return new ResponseEntity<>(beerService.getBeerById(beerId),HttpStatus.OK);
+
+    }
 }
