@@ -32,6 +32,8 @@ public class BeerController {
     }
 
     @PostMapping
+    //if @RequestBody we will not use then the object will be made but properties of it will not be
+    //bound to it i.e. the object properties will have null values - empty object
     public ResponseEntity handlePost(@RequestBody BeerDto beerDto)
     {
         BeerDto saveDto = beerService.saveNewBeer(beerDto);
@@ -44,11 +46,22 @@ public class BeerController {
     }
 
     @PutMapping({"/{beerId}"})
+    //if @RequestBody we will not use then the object will be made but properties of it will not be
+    //bound to it i.e. the object properties will have null values - empty object
     public ResponseEntity handleUpdate(@PathVariable("beerId") UUID beerId,@RequestBody BeerDto beerDto)
     {
         beerService.updateBeer(beerId,beerDto);
 
         return new ResponseEntity(HttpStatus.NO_CONTENT);
+
+    }
+
+    @DeleteMapping({"/{beerId}"})
+    @ResponseStatus(HttpStatus.NO_CONTENT)// similar like - return new ResponseEntity(HttpStatus.NO_CONTENT)
+    // we use ResponseEntity to provide additional information like Header as shown in PostMapping above
+    public void deleteBeer(@PathVariable("beerId") UUID beerId)
+    {
+        beerService.deleteById(beerId);
 
     }
 }
